@@ -98,6 +98,22 @@ X.renderer = function() {
   this._height = this._container.clientHeight;
   
   /**
+   * The x cordinate of paint point.
+   * 
+   * @type {!number}
+   * @public
+   */
+  this._paintX = 0;
+  
+  /**
+   * The y cordinate of paint point.
+   * 
+   * @type {!number}
+   * @public
+   */
+  this._paintY = 0;
+  
+  /**
    * The Canvas of this renderer.
    * 
    * @type {?Element}
@@ -277,6 +293,29 @@ X.renderer.prototype.onHover_ = function(event) {
   
 };
 
+/**
+ * The callback for X.event.events.PaintEvent events which indicate paint action
+ * 
+ * @param {!X.event.PaintEvent} event The paint event pointing to the relevant
+ *          screen coordinates.
+ * @throws {Error} An error if the given event is invalid.
+ * @protected
+ */
+X.renderer.prototype.onPaint_ = function(event) {
+
+  if (!goog.isDefAndNotNull(event) || !(event instanceof X.event.PaintEvent)) {
+    
+    throw new Error('Invalid paint event.');
+    
+  }
+  
+  var container = goog.dom.getElement(this._container);
+  
+  this._paintX = event._x;
+  this._paintY = event._y;
+  this.render_(false, false);
+  
+};
 
 /**
  * @protected
@@ -631,6 +670,9 @@ X.renderer.prototype.init = function(_contextName) {
   // .. listen to scroll events
   goog.events.listen(_interactor, X.event.events.SCROLL, this.onScroll_
       .bind(this));
+  // .. listen to paint events
+  goog.events.listen(_interactor, X.event.events.PAINT, this.onPaint_
+      .bind(this));
   
   // .. and finally register it to this instance
   this._interactor = _interactor;
@@ -962,6 +1004,16 @@ X.renderer.prototype.onRender = function() {
   // do nothing
 };
 
+
+/**
+ * Reset render
+ * 
+ * @public
+ */
+X.renderer.prototype.resetRender = function() { 
+      this._onShowtime = false;
+      this._loadingCompleted = false;
+};
 
 /**
  * Internal function to perform the actual rendering by looping through all

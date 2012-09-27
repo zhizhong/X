@@ -1,13 +1,3 @@
-# The X Toolkit: <i>WebGL&trade; for Scientific Visualization</i>
-
-* <b>XTK is <i>easy</i>, <i>lightweight</i> and <i>fast</i> !</b>
- * Native reading of a <i><b>variety of scientific file formats</b></i><br>
- * <i><b>Volume rendering, thresholding and cross-sectional slicing</b></i> of 3d image data<br>
- * <i><b>Label maps, color tables and surface overlays</b></i> are supported, as well as <i><a href="http://evanw.github.com/csg.js/" target="_blank">Constructive Solid Geometry</a></i><br>
- * CDash + Google Closure driven build and test system
-
-
-
 ## Example Usage ##
 
 ```javascript

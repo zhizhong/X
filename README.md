@@ -26,6 +26,14 @@ r.add(skull);
 r.render();
 ```
 
+## Development ##
+To compile the code, type
+```shell
+cd utils/
+./build.py
+```
+xtk.js will be generated. 
+
 ## License ##
 Copyright (c) 2012 The X Toolkit Developers  \<dev@goXTK.com>
 

@@ -5,7 +5,7 @@
 var r = new X.renderer3D();
 r.init();
     
-// create a mesh from a .vtk file
+// create a mesh from a .stl file
 var brain = new X.mesh();
 brain.file = 'brain.stl';
     

@@ -6,11 +6,11 @@ var r = new X.renderer3D();
 r.init();
     
 // create a mesh from a .vtk file
-var skull = new X.mesh();
-skull.file = 'skull.vtk';
+var brain = new X.mesh();
+brain.file = 'brain.stl';
     
 // add the object
-r.add(skull);
+r.add(brain);
     
 // .. and render it
 r.render();

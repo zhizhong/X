@@ -213,6 +213,24 @@ X.renderer3D = function() {
    */
   this._textures = new goog.structs.Map();
   
+  
+  /**
+   * The rotation direction of the animation. 
+   *  1 indicates left, 2 indicates right, 3 indicates up, 4 indicates down. 
+   * 
+   * @type {?number}
+   * @protected
+   */
+  this._animateRotateDirection = null;
+  
+  /**
+   * The rotate rate of the animation. 0 indicates no rotation. 
+   * 
+   * @type {?number}
+   * @protected
+   */
+  this._animateRotateRate = null;
+  
   /**
    * The configuration of this renderer.
    * 
@@ -249,6 +267,44 @@ X.renderer3D.prototype.__defineGetter__('config', function() {
   
 });
 
+/**
+ * Set rotation direction of the animation. 
+ * 
+ * @param {!number} animateRotateDirection The rotation direction of the animation. 
+ *            1 indicates left, 2 indicates right, 3 indicates up, 4 indicates down
+ * @public
+ */
+X.renderer3D.prototype.__defineSetter__('animateRotateDirection', function(animateRotateDirection) {
+
+  if (!goog.isDefAndNotNull(animateRotateDirection) || animateRotateDirection < 1
+  	|| animateRotateDirection > 4) {
+    
+    throw new Error('Invalid rorate direction.');
+    
+  }
+  
+  this._animateRotateDirection = animateRotateDirection;
+  
+});
+
+/**
+ * Set rotation rate of the animation. 
+ * 
+ * @param {!number} animateRotateRate The rotation rate of the animation. 0 indicates
+ *                 no rotation. 
+ * @public
+ */
+X.renderer3D.prototype.__defineSetter__('animateRotateRate', function(animateRotateRate) {
+
+  if (!goog.isDefAndNotNull(animateRotateRate) || animateRotateRate < 0) {
+    
+    throw new Error('Invalid rorate rate.');
+    
+  }
+  
+  this._animateRotateRate = animateRotateRate;
+  
+});
 
 /**
  * Reset the global bounding box for all objects to undefined and reset the
@@ -1460,6 +1516,26 @@ X.renderer3D.prototype.render_ = function(picking, invoked) {
     
   }
   
+  // check for rotate animation
+  if (goog.isDefAndNotNull(this._animateRotateDirection) && this._animateRotateDirection >= 0 &&
+  		goog.isDefAndNotNull(this._animateRotateRate) && this._animateRotateRate > 0) {
+  	var distance = new goog.math.Vec2(0, 0);
+  	if (this._animateRotateDirection == 1) {
+  		// left
+  		distance.x = this._animateRotateRate;
+  	} else if (this._animateRotateDirection == 2) {
+  		// right
+  		distance.x = -1 * this._animateRotateRate;
+  	} else if (this._animateRotateDirection == 3) {
+  		// up
+  		distance.y = this._animateRotateRate;
+  	} else if (this._animateRotateDirection == 4) {
+  		// down
+  		distance.y = -1 * this._animateRotateRate;
+  	}
+  	this._camera.rotate(distance);
+  }
+      
   // clear the canvas
   this._context.viewport(0, 0, this._width, this._height);
   this._context.clear(this._context.COLOR_BUFFER_BIT |

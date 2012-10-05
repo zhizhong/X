@@ -34,8 +34,10 @@ goog.require('X.event');
 goog.require('X.object');
 goog.require('X.parserCRV');
 goog.require('X.parserDCM');
+goog.require('X.parserDX');
 goog.require('X.parserFSM');
 goog.require('X.parserIMAGE');
+goog.require('X.parserIMG');
 goog.require('X.parserLBL');
 goog.require('X.parserLUT');
 goog.require('X.parserMGZ');
@@ -283,9 +285,17 @@ X.loader.prototype.parse = function(request, container, object) {
       
     }
     
-    // call the parse function and pass in the container, the object and the
-    // data stream and some additional value
-    _parser.parse(container, object, _data, flags);
+    if (container._hdrfiledata != null) {
+    
+    	_parser.parse(container, object, container._hdrfiledata, _data, flags);
+    
+    } else {
+    
+	    // call the parse function and pass in the container, the object and the
+	    // data stream and some additional value
+	    _parser.parse(container, object, _data, flags);
+    
+    }
     
   }.bind(this), 100);
   
@@ -357,6 +367,7 @@ X.loader.extensions = {
   'STL': [X.parserSTL, null],
   'VTK': [X.parserVTK, null],
   'TRK': [X.parserTRK, null],
+  'DX': [X.parserDX, null],
   // FSM, INFLATED, SMOOTHWM, SPHERE, PIAL and ORIG are all freesurfer meshes
   'FSM': [X.parserFSM, null],
   'INFLATED': [X.parserFSM, null],
@@ -370,6 +381,8 @@ X.loader.extensions = {
   // format ending .gz
   'DCM': [X.parserDCM, null],
   'DICOM': [X.parserDCM, null],
+  'IMG': [X.parserIMG, null],
+  'HDR': [X.parserIMG, null],
   '': [X.parserDCM, null],
   'CRV': [X.parserCRV, null],
   'LABEL': [X.parserLBL, null],

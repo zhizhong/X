@@ -64,6 +64,32 @@ X.parserNII = function() {
 // inherit from X.parser
 goog.inherits(X.parserNII, X.parser);
 
+/**
+ * Verify and adjust endianness of the nifti file by 
+ * checking sizeof_hdr value (must be 348)
+ * 
+ * @param {!ArrayBuffer} data The data of nifti file.
+ * @return {!boolean} If this is a valid nifti file
+ * @protected 
+ */
+X.parserNII.prototype.verifyNII_ = function(data) {
+	var data_copy = data.slice(0);
+	var sizeof_hdr_arr = new Uint32Array(data_copy, 0, 1);
+	var sizeof_hdr = sizeof_hdr_arr[0];
+	if (sizeof_hdr == 348) {
+		return true;
+	} else {
+	  	// flip endianness
+	  	sizeof_hdr = this.flipEndianness(sizeof_hdr_arr, 4)[0];
+		if (sizeof_hdr == 348) {
+		  	// this is big endian
+		  	this._littleEndian = false;
+		  	return true;
+		}
+	}
+	return false;
+}
+
 
 /**
  * @inheritDoc
@@ -74,7 +100,7 @@ X.parserNII.prototype.parse = function(container, object, data, flag) {
   
   var _data = data;
   
-  if (flag) {
+  if (!this.verifyNII_(_data)) {
     
     // we need to decompress the datastream
     
@@ -84,16 +110,10 @@ X.parserNII.prototype.parse = function(container, object, data, flag) {
     // .. and use the underlying array buffer
     _data = _data.buffer;
     
-  }
-  
-  // check if this data is compressed, then this int != 348
-  var sizeof_hdr = new Uint32Array(_data, 0, 1)[0];
-  
-  if (sizeof_hdr != 348) {
-  	
-  	// this is big endian
-  	this._littleEndian = false;
-  	
+    if (!this.verifyNII_(_data)) {	
+  		throw new Error('Invalid nifti file.');
+  	}
+    
   }
   
   // parse the byte stream

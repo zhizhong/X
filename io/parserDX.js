@@ -136,7 +136,7 @@ X.parserDX.prototype.parse = function(container, object, data, flag) {
  * Parses a line of .DX data and modifies the given X.triplets containers.
  * 
  * @param {!X.triplets} p The object's points as a X.triplets container.
- * @param {!X.triplets} n The object's normals as a X.triplets container.
+ * @param {!X.triplets} t The object's triangles as a X.triplets container.
  * @param {!Uint8Array} data The data to parse.
  * @param {!number} rangeStart The start of current range 
  * @param {!number} index The index of the current line.
@@ -160,7 +160,7 @@ X.parserDX.prototype.parseObject = function(p, t, data, rangeStart, index) {
   		type = lineFields[i];
   	} else if (field == 'items') {
   		i++;
-  		size = parseInt(lineFields[i]);
+  		size = parseInt(lineFields[i], 10);
   	} else if (field == 'shape') {
   		i++;
   		var value = lineFields[i];
@@ -201,9 +201,9 @@ X.parserDX.prototype.parseObject = function(p, t, data, rangeStart, index) {
 		    var z = parseFloat(lineFields[2]);
 	 		var id = objectArray.add(x, y, z);
 	 	} else if (type == 'int') {
-		    var x = parseInt(lineFields[0]);
-		    var y = parseInt(lineFields[1]);
-		    var z = parseInt(lineFields[2]);
+		    var x = parseInt(lineFields[0], 10);
+		    var y = parseInt(lineFields[1], 10);
+		    var z = parseInt(lineFields[2], 10);
 	 		var id = objectArray.add(x, y, z);
 	 	}
 	 	count++;

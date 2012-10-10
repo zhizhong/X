@@ -142,6 +142,7 @@ X.parser.prototype.parse = function(container, object, data, flag) {
  * @param {!X.base} container A container which holds the loaded data. This can
  *          be an X.object as well.
  * @param {!X.object} object The object to configure.
+ * @param {!ArrayBuffer} hdrdata The data containing header information.
  * @param {!ArrayBuffer} data The data to parse.
  * @param {*} flag An additional flag.
  * @throws {Error} An exception if something goes wrong.

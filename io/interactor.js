@@ -761,9 +761,10 @@ X.interactor.prototype.onKey = function(event) {
 
 
 /**
- * Overload this function to execute code on keyboard events.
+ * Rotate with a given distance
  * 
- * @param {Event} event The browser fired keyboard event.
+ * @param {!number} x The x distance to rotate
+ * @param {!number} y The y distance to rotate
  */
 X.interactor.prototype.rotate = function(x, y) {
 
@@ -772,7 +773,10 @@ X.interactor.prototype.rotate = function(x, y) {
 	var e = new X.event.RotateEvent();
 
     // attach the distance vector
-    e._distance = [x, y];
+    var distance = new goog.math.Vec2(0, 0);
+    distance.x = x;
+    distance.y = y;
+    e._distance = distance;
    	this.dispatchEvent(e);
   
 };

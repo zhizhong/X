@@ -321,31 +321,33 @@ X.renderer.prototype.onPaint_ = function(event) {
  * @protected
  */
 X.renderer.prototype.onResize_ = function() {
-
-  // grab the new width and height of the container
-  var container = goog.dom.getElement(this._container);
-  this._width = container.clientWidth;
-  this._height = container.clientHeight;
-  
-  // propagate it to the canvas
-  var canvas = goog.dom.getElement(this._canvas);
-  canvas.width = this._width;
-  canvas.height = this._height;
-  
-  if (this instanceof X.renderer3D) {
-    
-    // modify 3d viewport
-    this._context.viewport(0, 0, this._width, this._height);
-    
-    // modify perspective
-    this._camera._perspective = new Float32Array(this._camera
-        .calculatePerspective_(this._camera._fieldOfView,
-            (this._canvas.width / this._canvas.height), 1, 10000).flatten());
-    
-  }
-  
-  // .. and re-draw
-  this.resetViewAndRender();
+	// disable resize actions for now, 
+	// because it resets 3d view, 
+	// and also zooms 2d view which complicates coordinates
+	
+  // var container = goog.dom.getElement(this._container);
+  // this._width = container.clientWidth;
+  // this._height = container.clientHeight;
+//   
+  // // propagate it to the canvas
+  // var canvas = goog.dom.getElement(this._canvas);
+  // canvas.width = this._width;
+  // canvas.height = this._height;
+//   
+  // if (this instanceof X.renderer3D) {
+//     
+    // // modify 3d viewport
+    // this._context.viewport(0, 0, this._width, this._height);
+//     
+    // // modify perspective
+    // this._camera._perspective = new Float32Array(this._camera
+        // .calculatePerspective_(this._camera._fieldOfView,
+            // (this._canvas.width / this._canvas.height), 1, 10000).flatten());
+//     
+  // }
+//   
+  // // .. and re-draw
+  // this.resetViewAndRender();
   
 };
 

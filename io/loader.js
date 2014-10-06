@@ -34,6 +34,7 @@ goog.require('X.event');
 goog.require('X.object');
 goog.require('X.parserCRV');
 goog.require('X.parserDCM');
+goog.require('X.parserDFS');
 goog.require('X.parserDX');
 goog.require('X.parserFSM');
 goog.require('X.parserIMAGE');
@@ -395,5 +396,6 @@ X.loader.extensions = {
   'JPG': [X.parserIMAGE, 'jpeg'],
   'JPEG': [X.parserIMAGE, 'jpeg'],
   'GIF': [X.parserIMAGE, 'gif'],
-  'DX': [X.parserDX, null]
+  'DX': [X.parserDX, null],
+  'DFS': [X.parserDFS, null]
 };

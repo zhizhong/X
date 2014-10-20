@@ -158,21 +158,23 @@ X.parser.prototype.arrayMinMax = function(data) {
 
   var _min = Infinity;
   var _max = -Infinity;
-
+  var j = new Array();
   // buffer the length
   var _datasize = data.length;
 
   var i = 0;
+  var count = 0;
+  var limit = 1000;
   for (i = 0; i < _datasize; i++) {
-
-    if(!isNaN(data[i])) {
-
-      var _value = data[i];
-      _min = Math.min(_min, _value);
-      _max = Math.max(_max, _value);
-
+    var _value = data[i];
+    if (_value > limit) {
+        count = count +1;
     }
-
+    _min = Math.min(_min, _value);
+    _max = Math.max(_max, _value);
+  }
+  if (count > 0 && count/_datasize < .001) {
+      _max = limit;
   }
 
   return [ _min, _max ];
